@@ -1,0 +1,101 @@
+import time
+import math
+
+def matrix_multiply(A, B):
+    return [
+        [A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]],
+        [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]]
+    ]
+
+def matrix_power(matrix, n):
+    result = [[1, 0], [0, 1]]  # Identity matrix
+    while n > 0:
+        if n % 2 == 1:
+            result = matrix_multiply(result, matrix)
+        matrix = matrix_multiply(matrix, matrix)
+        n //= 2
+    return result
+
+def fibonacci(n):
+    if n == 0:
+        return 0
+    F = [[1, 1], [1, 0]]
+    result = matrix_power(F, n - 1)
+    return result[0][0]
+
+def fibonacci_series(limit):
+    return [fibonacci(i) for i in range(limit + 1)]
+
+def sum_of_fibonacci(limit):
+    return sum(fibonacci_series(limit))
+
+def fibonacci_mod(n, mod):
+    return fibonacci(n) % mod
+
+def fibonacci_ratio(n):
+    if n < 2:
+        return None
+    return fibonacci(n) / fibonacci(n - 1)
+
+def fibonacci_performance(n):
+    start_time = time.time()
+    result = fibonacci(n)
+    end_time = time.time()
+    return result, end_time - start_time
+
+def fibonacci_check_perfect_square(x):
+    s = int(math.isqrt(x))
+    return s * s == x
+
+def is_fibonacci_number(num):
+    return fibonacci_check_perfect_square(5 * num * num + 4) or fibonacci_check_perfect_square(5 * num * num - 4)
+
+def main():
+    print("Fibonacci Generator with Advanced Features")
+    print("1. Find nth Fibonacci number")
+    print("2. Generate Fibonacci series up to n")
+    print("3. Calculate sum of Fibonacci series up to n")
+    print("4. Find nth Fibonacci number modulo m")
+    print("5. Find ratio of consecutive Fibonacci numbers")
+    print("6. Measure performance of Fibonacci calculation")
+    print("7. Check if a number is a Fibonacci number")
+
+    choice = int(input("Enter your choice (1-7): "))
+
+    if choice == 1:
+        n = int(input("Enter the position of Fibonacci number to generate: "))
+        print(f"The {n}th Fibonacci number is: {fibonacci(n)}")
+    elif choice == 2:
+        n = int(input("Enter the limit to generate Fibonacci series: "))
+        print(f"Fibonacci series up to {n}: {fibonacci_series(n)}")
+    elif choice == 3:
+        n = int(input("Enter the limit to calculate the sum of Fibonacci series: "))
+        print(f"Sum of Fibonacci series up to {n}: {sum_of_fibonacci(n)}")
+    elif choice == 4:
+        n = int(input("Enter the position of Fibonacci number: "))
+        m = int(input("Enter the modulo value: "))
+        print(f"The {n}th Fibonacci number modulo {m} is: {fibonacci_mod(n, m)}")
+    elif choice == 5:
+        n = int(input("Enter the position to find the ratio with the previous Fibonacci number: "))
+        ratio = fibonacci_ratio(n)
+        if ratio:
+            print(f"The ratio of the {n}th to the {n-1}th Fibonacci number is: {ratio}")
+        else:
+            print("Ratio cannot be determined for the given input.")
+    elif choice == 6:
+        n = int(input("Enter the position of Fibonacci number to measure performance: "))
+        result, duration = fibonacci_performance(n)
+        print(f"The {n}th Fibonacci number is {result}, calculated in {duration:.6f} seconds.")
+    elif choice == 7:
+        num = int(input("Enter the number to check if it is a Fibonacci number: "))
+        if is_fibonacci_number(num):
+            print(f"{num} is a Fibonacci number.")
+        else:
+            print(f"{num} is NOT a Fibonacci number.")
+    else:
+        print("Invalid choice. Please select between 1-7.")
+
+if __name__ == "__main__":
+    main()
+
+
